@@ -20,7 +20,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
-
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
       - name: Setup Bun
         uses: oven-sh/setup-bun@v2
         with:
@@ -44,7 +45,6 @@ jobs:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
