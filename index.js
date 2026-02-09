@@ -14,29 +14,90 @@ const dotColor = document.getElementById("dotColor");
 const bgColor = document.getElementById("bgColor");
 const dotType = document.getElementById("dotType");
 const cornerType = document.getElementById("cornerType");
-const shape = document.getElementById("shape");
 const sizeInput = document.getElementById("size");
 const marginInput = document.getElementById("margin");
 
 const STORAGE_KEY = "qrcode-gen-settings";
+const PRESETS_KEY = "qrcode-gen-presets";
+const MAX_PRESETS = 3;
 
 let debounceTimer = null;
 let logoDataUrl = null;
 let logoFileName = null;
 
-function saveSettings() {
-  const settings = {
+function getCurrentState() {
+  return {
     data: dataInput.value,
     dotColor: dotColor.value,
     bgColor: bgColor.value,
     dotType: dotType.value,
     cornerType: cornerType.value,
-    shape: shape.value,
     size: sizeInput.value,
     margin: marginInput.value,
-    logoDataUrl,
-    logoFileName,
+    logoDataUrl: logoDataUrl || null,
+    logoFileName: logoFileName || null,
   };
+}
+
+function applyState(state) {
+  if (state.data != null) dataInput.value = state.data;
+  if (state.dotColor) dotColor.value = state.dotColor;
+  if (state.bgColor) bgColor.value = state.bgColor;
+  if (state.dotType) dotType.value = state.dotType;
+  if (state.cornerType) cornerType.value = state.cornerType;
+  if (state.size != null) sizeInput.value = state.size;
+  if (state.margin != null) marginInput.value = state.margin;
+  logoDataUrl = state.logoDataUrl || null;
+  logoFileName = state.logoFileName || null;
+  logoInput.value = "";
+  if (logoDataUrl) {
+    uploadText.textContent = logoFileName || "logo";
+    clearLogoBtn.hidden = false;
+  } else {
+    uploadText.textContent = "Drop image or click to upload";
+    clearLogoBtn.hidden = true;
+  }
+}
+
+function getPresets() {
+  try {
+    const raw = localStorage.getItem(PRESETS_KEY);
+    if (!raw) return [];
+    const arr = JSON.parse(raw);
+    return Array.isArray(arr) ? arr.slice(0, MAX_PRESETS) : [];
+  } catch (e) {
+    return [];
+  }
+}
+
+function setPresets(arr) {
+  const list = arr.slice(0, MAX_PRESETS);
+  try {
+    localStorage.setItem(PRESETS_KEY, JSON.stringify(list));
+  } catch (e) {
+    console.warn("Could not save presets:", e);
+  }
+  updatePresetSlots();
+}
+
+function updatePresetSlots() {
+  const presets = getPresets();
+  for (let i = 0; i < MAX_PRESETS; i++) {
+    const nameInput = document.getElementById(`presetName${i}`);
+    const loadBtn = document.getElementById(`presetLoad${i}`);
+    if (presets[i]) {
+      nameInput.value = presets[i].name ?? `Preset ${i + 1}`;
+      loadBtn.disabled = false;
+    } else {
+      nameInput.value = "";
+      nameInput.placeholder = "Name…";
+      loadBtn.disabled = true;
+    }
+  }
+}
+
+function saveSettings() {
+  const settings = getCurrentState();
   try {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(settings));
   } catch (e) {
@@ -49,20 +110,7 @@ function loadSettings() {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (!raw) return;
     const s = JSON.parse(raw);
-    if (s.data != null) dataInput.value = s.data;
-    if (s.dotColor) dotColor.value = s.dotColor;
-    if (s.bgColor) bgColor.value = s.bgColor;
-    if (s.dotType) dotType.value = s.dotType;
-    if (s.cornerType) cornerType.value = s.cornerType;
-    if (s.shape) shape.value = s.shape;
-    if (s.size) sizeInput.value = s.size;
-    if (s.margin != null) marginInput.value = s.margin;
-    if (s.logoDataUrl) {
-      logoDataUrl = s.logoDataUrl;
-      logoFileName = s.logoFileName || "logo";
-      uploadText.textContent = logoFileName;
-      clearLogoBtn.hidden = false;
-    }
+    applyState(s);
   } catch (e) {
     console.warn("Could not load settings:", e);
   }
@@ -74,7 +122,7 @@ const qrCode = new QRCodeStyling({
   type: "canvas",
   data: "",
   dotsOptions: { color: "#0c4a6e", type: "rounded" },
-  backgroundOptions: { color: "#000000" },
+  backgroundOptions: { color: "#ffffff" },
   cornersSquareOptions: { type: "square", color: "#0c4a6e" },
   cornersDotOptions: { type: "square", color: "#0c4a6e" },
   imageOptions: { crossOrigin: "anonymous", margin: 10 },
@@ -101,7 +149,7 @@ function getOptions() {
     margin,
     data: dataInput.value.trim() || " ",
     image: logoDataUrl || undefined,
-    shape: shape.value,
+    shape: "square",
     dotsOptions: { type: dotType.value, color: dotColor.value },
     backgroundOptions: { color: bgColor.value },
     cornersSquareOptions: cornerOpts,
@@ -174,7 +222,7 @@ function onDataInput() {
 dataInput.addEventListener("input", onDataInput);
 dataInput.addEventListener("paste", onDataInput);
 
-[dotColor, bgColor, dotType, cornerType, shape, sizeInput, marginInput].forEach(
+[dotColor, bgColor, dotType, cornerType, sizeInput, marginInput].forEach(
   (el) => {
     el.addEventListener("change", render);
     el.addEventListener("input", render);
@@ -185,6 +233,50 @@ downloadBtn.addEventListener("click", () => {
   qrCode.download({ name: "qrcode", extension: "png" });
 });
 
+const FEEDBACK_MS = 1500;
+
+function buttonFeedback(btn, isLoad, slotIndex, feedbackText) {
+  const originalText = btn.textContent;
+  btn.textContent = feedbackText;
+  btn.classList.add("preset-btn-feedback");
+  btn.disabled = true;
+  setTimeout(() => {
+    btn.textContent = originalText;
+    btn.classList.remove("preset-btn-feedback");
+    btn.disabled = isLoad ? !getPresets()[slotIndex] : false;
+  }, FEEDBACK_MS);
+}
+
+for (let i = 0; i < MAX_PRESETS; i++) {
+  document.getElementById(`presetSave${i}`).addEventListener("click", () => {
+    const presets = getPresets();
+    const nameInput = document.getElementById(`presetName${i}`);
+    const name = nameInput.value.trim() || `Preset ${i + 1}`;
+    presets[i] = { name, ...getCurrentState() };
+    setPresets(presets);
+    buttonFeedback(
+      document.getElementById(`presetSave${i}`),
+      false,
+      i,
+      "Saved!",
+    );
+  });
+  document.getElementById(`presetLoad${i}`).addEventListener("click", () => {
+    const presets = getPresets();
+    if (presets[i]) {
+      applyState(presets[i]);
+      render();
+      buttonFeedback(
+        document.getElementById(`presetLoad${i}`),
+        true,
+        i,
+        "Loaded!",
+      );
+    }
+  });
+}
+
 loadSettings();
+updatePresetSlots();
 qrCode.append(canvasEl);
 render();
