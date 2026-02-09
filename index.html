@@ -1,119 +1,162 @@
 <!doctype html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Free QR code generator. Create custom QR codes with your logo, colors, and styles. Encode URLs or text, download as PNG. No sign-up required."
+    />
+    <meta
+      name="keywords"
+      content="QR code generator, create QR code, custom QR code, QR code with logo, free QR code"
+    />
+    <meta name="author" content="notkaramel.dev" />
+    <meta name="theme-color" content="#0284c7" />
+    <link rel="canonical" href="https://qrcode.notkaramel.dev/" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>QR Code Generator, by @notkaramel</title>
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://qrcode.notkaramel.dev/" />
+    <meta
+      property="og:title"
+      content="QR Code Generator - Create & Download Custom QR Codes"
+    />
+    <meta
+      property="og:description"
+      content="Free QR code generator. Create custom QR codes with your logo, colors, and styles. Encode URLs or text, download as PNG. No sign-up required."
+    />
+    <meta
+      property="og:site_name"
+      content="QR Code Generator | notkaramel.dev"
+    />
+    <meta property="og:locale" content="en_US" />
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary" />
+    <meta
+      name="twitter:title"
+      content="QR Code Generator - Create & Download Custom QR Codes"
+    />
+    <meta
+      name="twitter:description"
+      content="Free QR code generator. Create custom QR codes with your logo, colors, and styles. Encode URLs or text, download as PNG. No sign-up required."
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Free QR code generator. Create custom QR codes with your logo, colors, and styles. Encode URLs or text, download as PNG. No sign-up required." />
-  <meta name="keywords" content="QR code generator, create QR code, custom QR code, QR code with logo, free QR code" />
-  <meta name="author" content="notkaramel.dev" />
-  <meta name="theme-color" content="#0284c7" />
-  <link rel="canonical" href="https://qrcode.notkaramel.dev/" />
-  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-  <title>QR Code Generator, by @notkaramel</title>
-  <!-- Open Graph -->
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://qrcode.notkaramel.dev/" />
-  <meta property="og:title" content="QR Code Generator - Create & Download Custom QR Codes" />
-  <meta property="og:description" content="Free QR code generator. Create custom QR codes with your logo, colors, and styles. Encode URLs or text, download as PNG. No sign-up required." />
-  <meta property="og:site_name" content="QR Code Generator | notkaramel.dev" />
-  <meta property="og:locale" content="en_US" />
-  <!-- Twitter Card -->
-  <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="QR Code Generator - Create & Download Custom QR Codes" />
-  <meta name="twitter:description" content="Free QR code generator. Create custom QR codes with your logo, colors, and styles. Encode URLs or text, download as PNG. No sign-up required." />
-  <link rel="stylesheet" href="style.css" />
-</head>
+  <body>
+    <div class="app">
+      <header class="header">
+        <h1>QR Code Generator</h1>
+      </header>
 
-<body>
-  <div class="app">
-    <header class="header">
-      <h1>QR Code Generator</h1>
-    </header>
+      <main class="main">
+        <section class="panel controls">
+          <div class="field">
+            <label for="data">Content</label>
+            <textarea
+              id="data"
+              rows="3"
+              placeholder="Enter URL or text…"
+            ></textarea>
+          </div>
 
-    <main class="main">
-      <section class="panel controls">
-        <div class="field">
-          <label for="data">Content</label>
-          <textarea id="data" rows="3" placeholder="Enter URL or text…"></textarea>
-          <span class="hint">Encoded after 1s pause</span>
-        </div>
+          <div class="field">
+            <label>Logo</label>
+            <div class="upload-area" id="uploadArea">
+              <input type="file" id="logo" accept="image/*" hidden />
+              <span class="upload-text" id="uploadText"
+                >Drop image or click to upload</span
+              >
+              <button type="button" class="clear-logo" id="clearLogo" hidden>
+                Remove logo
+              </button>
+            </div>
+          </div>
 
-        <div class="field">
-          <label>Logo</label>
-          <div class="upload-area" id="uploadArea">
-            <input type="file" id="logo" accept="image/*" hidden />
-            <span class="upload-text" id="uploadText">Drop image or click to upload</span>
-            <button type="button" class="clear-logo" id="clearLogo" hidden>Remove logo</button>
-          </div>
-        </div>
+          <fieldset class="params">
+            <legend>Parameters</legend>
+            <div class="field">
+              <label for="dotColor">Dots color</label>
+              <input type="color" id="dotColor" value="#0c4a6e" />
+            </div>
+            <div class="field">
+              <label for="bgColor">Background</label>
+              <input type="color" id="bgColor" value="#000000" />
+            </div>
+            <div class="field">
+              <label for="dotType">Dot style</label>
+              <select id="dotType">
+                <option value="square">Square</option>
+                <option value="rounded">Rounded</option>
+                <option value="dots">Dots</option>
+                <option value="classy">Classy</option>
+                <option value="classy-rounded">Classy rounded</option>
+                <option value="extra-rounded">Extra rounded</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="cornerType">Corner style</label>
+              <select id="cornerType">
+                <option value="square">Square</option>
+                <option value="dot">Dot</option>
+                <option value="extra-rounded">Extra rounded</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="shape">Shape</label>
+              <select id="shape">
+                <option value="square">Square</option>
+                <option value="circle">Circle</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="size">Size (px)</label>
+              <input type="number" id="size" min="100" max="2000" value="600" />
+            </div>
+            <div class="field">
+              <label for="margin">Margin</label>
+              <input type="number" id="margin" min="0" max="50" value="10" />
+            </div>
+          </fieldset>
+        </section>
 
-        <fieldset class="params">
-          <legend>Parameters</legend>
-          <div class="field">
-            <label for="dotColor">Dots color</label>
-            <input type="color" id="dotColor" value="#0c4a6e" />
+        <section class="panel preview">
+          <div class="preview-inner">
+            <div class="canvas-wrap" id="canvasWrap">
+              <div class="spinner" id="spinner" hidden aria-hidden="true"></div>
+              <div id="canvas"></div>
+            </div>
+            <button type="button" class="download-qr" id="downloadQr">
+              Download QR code
+            </button>
+            <p class="preview-hint">QR updates after you type (1s debounce)</p>
           </div>
-          <div class="field">
-            <label for="bgColor">Background</label>
-            <input type="color" id="bgColor" value="#e0f2fe" />
-          </div>
-          <div class="field">
-            <label for="dotType">Dot style</label>
-            <select id="dotType">
-              <option value="square">Square</option>
-              <option value="rounded">Rounded</option>
-              <option value="dots">Dots</option>
-              <option value="classy">Classy</option>
-              <option value="classy-rounded">Classy rounded</option>
-              <option value="extra-rounded">Extra rounded</option>
-            </select>
-          </div>
-          <div class="field">
-            <label for="cornerType">Corner style</label>
-            <select id="cornerType">
-              <option value="square">Square</option>
-              <option value="dot">Dot</option>
-              <option value="extra-rounded">Extra rounded</option>
-            </select>
-          </div>
-          <div class="field">
-            <label for="shape">Shape</label>
-            <select id="shape">
-              <option value="square">Square</option>
-              <option value="circle">Circle</option>
-            </select>
-          </div>
-          <div class="field">
-            <label for="size">Size (px)</label>
-            <input type="number" id="size" min="200" max="600" value="300" />
-          </div>
-          <div class="field">
-            <label for="margin">Margin</label>
-            <input type="number" id="margin" min="0" max="50" value="10" />
-          </div>
-        </fieldset>
-      </section>
-
-      <section class="panel preview">
-        <div class="preview-inner">
-          <div class="canvas-wrap" id="canvasWrap">
-            <div class="spinner" id="spinner" hidden aria-hidden="true"></div>
-            <div id="canvas"></div>
-          </div>
-          <button type="button" class="download-qr" id="downloadQr">Download QR code</button>
-          <p class="preview-hint">QR updates after you type (1s debounce)</p>
-        </div>
-      </section>
-    </main>
-    <footer class="footer">
-      <p>Created by <a href="https://github.com/notkaramel" target="_blank" rel="noopener noreferrer">@notkaramel</a> with love and good vibes.</p>
-      <p>
-        Source code available on <a href="https://github.com/notkaramel/qrcode-generator" target="_blank" rel="noopener noreferrer">GitHub</a>.
-      </p>
-    </footer>
-  </div>
-  <script type="module" src="index.js"></script>
-</body>
-
+        </section>
+      </main>
+      <footer class="footer">
+        <p>
+          Created by
+          <a
+            href="https://github.com/notkaramel"
+            target="_blank"
+            rel="noopener noreferrer"
+            >@notkaramel</a
+          >
+          with love and good vibes.
+        </p>
+        <p>
+          Source code available on
+          <a
+            href="https://github.com/notkaramel/qrcode-generator"
+            target="_blank"
+            rel="noopener noreferrer"
+            >GitHub</a
+          >.
+        </p>
+      </footer>
+    </div>
+    <script type="module" src="index.js"></script>
+  </body>
 </html>

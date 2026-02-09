@@ -69,12 +69,12 @@ function loadSettings() {
 }
 
 const qrCode = new QRCodeStyling({
-  width: 300,
-  height: 300,
+  width: 600,
+  height: 600,
   type: "canvas",
   data: "",
   dotsOptions: { color: "#0c4a6e", type: "rounded" },
-  backgroundOptions: { color: "#e0f2fe" },
+  backgroundOptions: { color: "#000000" },
   cornersSquareOptions: { type: "square", color: "#0c4a6e" },
   cornersDotOptions: { type: "square", color: "#0c4a6e" },
   imageOptions: { crossOrigin: "anonymous", margin: 10 },
@@ -174,13 +174,15 @@ function onDataInput() {
 dataInput.addEventListener("input", onDataInput);
 dataInput.addEventListener("paste", onDataInput);
 
-[dotColor, bgColor, dotType, cornerType, shape, sizeInput, marginInput].forEach((el) => {
-  el.addEventListener("change", render);
-  el.addEventListener("input", render);
-});
+[dotColor, bgColor, dotType, cornerType, shape, sizeInput, marginInput].forEach(
+  (el) => {
+    el.addEventListener("change", render);
+    el.addEventListener("input", render);
+  },
+);
 
 downloadBtn.addEventListener("click", () => {
-  qrCode.download({ name: "qr-code", extension: "png" });
+  qrCode.download({ name: "qrcode", extension: "png" });
 });
 
 loadSettings();
