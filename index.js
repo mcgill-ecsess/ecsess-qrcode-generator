@@ -9,7 +9,7 @@ const PRESETS = {
     title: "ECSESS QR Code Generator",
     dotColor: "#2d6244",
     bgColor: "#fafffd",
-    logo: "/ECSESSLogo.png",
+    logo: "./ECSESSLogo.png",
     pageBg:
       "linear-gradient(160deg, #0d2818 0%, #1b4332 40%,rgb(14, 79, 52) 100%)",
     pageColor: "#d8f3dc",
@@ -21,7 +21,7 @@ const PRESETS = {
     title: "The Factory QR Code Generator",
     dotColor: "#57a282",
     bgColor: "#f5fffb",
-    logo: "/TheFactoryLogo.png",
+    logo: "./TheFactoryLogo.png",
     pageBg:
       "linear-gradient(160deg,rgb(6, 62, 44) 0%, rgb(27, 73, 48) 40%, rgb(26, 85, 61)100%)",
     pageColor: "#ccfbf1",
@@ -33,7 +33,7 @@ const PRESETS = {
     title: "Code.Jam() QR Code Generator",
     dotColor: "#629cc0",
     bgColor: "#ffffff",
-    logo: "/CodeJamLogo.svg",
+    logo: "./CodeJamLogo.svg",
     pageBg: "linear-gradient(160deg, #1e1b4b 0%, #312e81 50%, #4338ca 100%)",
     pageColor: "#e0e7ff",
     panelBg: "rgba(255, 255, 255, 0.97)",
