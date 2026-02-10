@@ -12,7 +12,7 @@
       content="QR code generator, create QR code, custom QR code, QR code with logo, free QR code"
     />
     <meta name="author" content="notkaramel.dev" />
-    <meta name="theme-color" content="#0284c7" />
+    <meta name="theme-color" content="#1b4332" />
     <link rel="canonical" href="https://qrcode.notkaramel.dev/" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <title>QR Code Generator, by @notkaramel</title>
@@ -48,153 +48,130 @@
   <body>
     <div class="app">
       <header class="header">
-        <h1>QR Code Generator</h1>
+        <h1 id="pageTitle">ECSESS QR Code Generator</h1>
       </header>
 
       <main class="main">
         <div class="controls-column">
           <section class="panel controls">
-            <div class="field">
-              <label for="data">Content</label>
-              <textarea
-                id="data"
-                rows="3"
-                placeholder="Enter URL or text…"
-              ></textarea>
-            </div>
+            <div class="control-blocks">
+              <div class="control-block control-block-content">
+                <h2 class="control-block-title">Content</h2>
+                <div class="field">
+                  <label for="data" class="sr-only">Content</label>
+                  <textarea
+                    id="data"
+                    rows="3"
+                    placeholder="Enter URL or text…"
+                  >https://www.youtube.com/watch?v=dQw4w9WgXcQ</textarea>
+                </div>
+              </div>
 
-            <fieldset class="params">
-              <legend>Decorations</legend>
-              <div class="field">
-                <label>Logo</label>
-                <div class="upload-area" id="uploadArea">
-                  <input type="file" id="logo" accept="image/*" hidden />
-                  <span class="upload-text" id="uploadText"
-                    >Drop image or click to upload</span
-                  >
+              <div class="control-block control-block-preset">
+                <h2 class="control-block-title">Preset</h2>
+                <input type="hidden" id="preset" value="ecsess" />
+                <div class="preset-buttons" role="group" aria-label="Preset">
                   <button
                     type="button"
-                    class="clear-logo"
-                    id="clearLogo"
-                    hidden
+                    class="preset-btn active"
+                    data-preset="ecsess"
+                    title="ECSESS"
                   >
-                    Remove logo
+                    <img
+                      src="/ECSESSLogo.png"
+                      alt="ECSESS"
+                      width="48"
+                      height="48"
+                    />
+                  </button>
+                  <button
+                    type="button"
+                    class="preset-btn"
+                    data-preset="thefactory"
+                    title="The Factory"
+                  >
+                    <img
+                      src="/TheFactoryLogo.png"
+                      alt="The Factory"
+                      width="48"
+                      height="48"
+                    />
+                  </button>
+                  <button
+                    type="button"
+                    class="preset-btn"
+                    data-preset="codejam"
+                    title="Code.Jam()"
+                  >
+                    <img
+                      src="/CodeJamLogo.svg"
+                      alt="Code.Jam()"
+                      width="48"
+                      height="48"
+                    />
                   </button>
                 </div>
               </div>
-              <div class="field">
-                <label for="dotColor">Dots color</label>
-                <input type="color" id="dotColor" value="#0c4a6e" />
-              </div>
-              <div class="field">
-                <label for="bgColor">Background</label>
-                <input type="color" id="bgColor" value="#ffffff" />
-              </div>
-              <div class="field">
-                <label for="dotType">Dot style</label>
-                <select id="dotType">
-                  <option value="square">Square</option>
-                  <option value="rounded">Rounded</option>
-                  <option value="dots">Dots</option>
-                  <option value="classy">Classy</option>
-                  <option value="classy-rounded">Classy rounded</option>
-                  <option value="extra-rounded">Extra rounded</option>
-                </select>
-              </div>
-              <div class="field">
-                <label for="cornerType">Corner style</label>
-                <select id="cornerType">
-                  <option value="square">Square</option>
-                  <option value="dot">Dot</option>
-                  <option value="extra-rounded">Extra rounded</option>
-                </select>
-              </div>
-              <div class="field">
-                <label for="size">Size (px)</label>
-                <input
-                  type="number"
-                  id="size"
-                  min="100"
-                  max="2000"
-                  value="600"
-                />
-              </div>
-              <div class="field">
-                <label for="margin">Margin</label>
-                <input type="number" id="margin" min="0" max="50" value="10" />
-              </div>
-            </fieldset>
-          </section>
 
-          <section class="panel presets-panel">
-            <h2 class="presets-title">Presets</h2>
-            <div class="presets" id="presets">
-              <div class="preset-slot" data-slot="0">
-                <input
-                  type="text"
-                  class="preset-name"
-                  id="presetName0"
-                  placeholder="Name…"
-                  aria-label="Preset 1 name"
-                />
-                <div class="preset-actions">
-                  <button
-                    type="button"
-                    class="preset-load"
-                    id="presetLoad0"
-                    disabled
-                  >
-                    Load
-                  </button>
-                  <button type="button" class="preset-save" id="presetSave0">
-                    Save
-                  </button>
+              <details
+                class="control-block control-block-decorations collapsible"
+                id="decorations"
+              >
+                <summary class="control-block-title control-block-summary">
+                  Decorations
+                </summary>
+                <div class="params-grid">
+                  <div class="field">
+                    <label for="dotColor">Dots color</label>
+                    <input type="color" id="dotColor" value="#1b4332" />
+                  </div>
+                  <div class="field">
+                    <label for="bgColor">Background</label>
+                    <input type="color" id="bgColor" value="#ffffff" />
+                  </div>
+                  <div class="field">
+                    <label for="dotType">Dot style</label>
+                    <select id="dotType">
+                      <option value="square">Square</option>
+                      <option value="rounded" selected>Rounded</option>
+                      <option value="dots">Dots</option>
+                      <option value="classy">Classy</option>
+                      <option value="classy-rounded">Classy rounded</option>
+                      <option value="extra-rounded">Extra rounded</option>
+                    </select>
+                  </div>
+                  <div class="field">
+                    <label for="cornerType">Corner style</label>
+                    <select id="cornerType">
+                      <option value="square">Square</option>
+                      <option value="dot">Dot</option>
+                      <option value="extra-rounded" selected>
+                        Extra rounded
+                      </option>
+                    </select>
+                  </div>
+                  <div class="field">
+                    <label for="size">Size (px)</label>
+                    <input
+                      type="number"
+                      id="size"
+                      min="100"
+                      max="2000"
+                      value="1000"
+                    />
+                  </div>
+                  <div class="field">
+                    <label for="margin">Margin</label>
+                    <input
+                      type="number"
+                      id="margin"
+                      min="0"
+                      max="50"
+                      value="20"
+                    />
+                  </div>
                 </div>
-              </div>
-              <div class="preset-slot" data-slot="1">
-                <input
-                  type="text"
-                  class="preset-name"
-                  id="presetName1"
-                  placeholder="Name…"
-                  aria-label="Preset 2 name"
-                />
-                <div class="preset-actions">
-                  <button
-                    type="button"
-                    class="preset-load"
-                    id="presetLoad1"
-                    disabled
-                  >
-                    Load
-                  </button>
-                  <button type="button" class="preset-save" id="presetSave1">
-                    Save
-                  </button>
-                </div>
-              </div>
-              <div class="preset-slot" data-slot="2">
-                <input
-                  type="text"
-                  class="preset-name"
-                  id="presetName2"
-                  placeholder="Name…"
-                  aria-label="Preset 3 name"
-                />
-                <div class="preset-actions">
-                  <button
-                    type="button"
-                    class="preset-load"
-                    id="presetLoad2"
-                    disabled
-                  >
-                    Load
-                  </button>
-                  <button type="button" class="preset-save" id="presetSave2">
-                    Save
-                  </button>
-                </div>
-              </div>
+              </details>
             </div>
           </section>
         </div>
@@ -208,7 +185,6 @@
             <button type="button" class="download-qr" id="downloadQr">
               Download QR code
             </button>
-            <p class="preview-hint">QR updates after you type (1s debounce)</p>
           </div>
         </section>
       </main>
@@ -224,12 +200,21 @@
           with love and good vibes.
         </p>
         <p>
-          Source code available on
+          Original project: 
           <a
             href="https://github.com/notkaramel/qrcode-generator"
             target="_blank"
             rel="noopener noreferrer"
-            >GitHub</a
+            ><i>notkaramel/qrcode-generator</i></a
+          >.
+        </p>
+        <p>
+          Source code:
+          <a
+            href="https://github.com/mcgill-ecsess/ecsess-qrcode-generator"
+            target="_blank"
+            rel="noopener noreferrer"
+            ><i>mcgill-ecsess/ecsess-qrcode-generator</i></a
           >.
         </p>
       </footer>
